@@ -1,0 +1,16 @@
+{
+  "name": "on-it-be",
+  "version": "1.0.0",
+  "description": "Shopping Cart Simulation",
+  "license": "ISC",
+  "author": "m.ikhmalhidayat@gmail.com",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "mysql2": "^3.15.1"
+  }
+}
