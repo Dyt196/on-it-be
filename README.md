@@ -9,7 +9,7 @@ A simple Node.js REST API built with **Express.js**. This project follows a modu
 - ✅ Express.js server setup  
 - ✅ Modular routing structure  
 - ✅ JSON body parsing with `express.json()`  
-- ✅ Environment variables with `dotenv` (optional)  
+- ✅ Environment variables with `dotenv`
 - ✅ Ready for integration with databases or authentication  
 
 ---
@@ -30,8 +30,8 @@ npm install
 ## ▶️ Running the Server
 
 ```bash
-# Development mode (with nodemon, if installed)
-npm run dev
+# Development mode
+node app.js
 
 # Production mode
 npm start
@@ -52,10 +52,12 @@ http://localhost:3000
 ├── src
 │   ├── routes
 │   │   └── main.js
-│   ├── controllers (optional)
-│   ├── middleware  (optional)
-│   └── app.js
+│   ├── controllers
+│   │   └── logic.js
+│   └── databases
+│       └── initiate.js
 ├── package.json
+├── app.js
 └── README.md
 ```
 
@@ -63,26 +65,18 @@ http://localhost:3000
 
 ## 🛣 Example Routes
 
-| Method | Endpoint | Description        |
-|--------|----------|--------------------|
-| GET    | `/`      | Health check       |
-| GET    | `/main`  | Sample route       |
+| Method | Endpoint           | Description        |
+|--------|--------------------|--------------------|
+| GET    | `/`                | Health check       |
+| GET    | `/main`            | Get Item List      |
+| GET    | `/main/courier`.   | Get Courier List   |
+| POST   | `/main/processcart`| Process Cart       |
 
 Example response:
 
 ```json
 { "message": "API running..." }
 ```
-
----
-
-## 🧪 Testing (Optional)
-
-```bash
-npm test
-```
-
----
 
 ## 📜 License
 
