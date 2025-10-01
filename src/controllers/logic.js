@@ -35,10 +35,12 @@ function splitItem(cart, courier) {
     // Get default value for calculation
     const totalPrice = cart.reduce((sum, item) => sum + item.prc, 0)
     const totalWeight = cart.reduce((sum, item) => sum + item.wgt, 0)
+    // Calculate Default Total Package Based on Total Price (Preferrably < 250 per package)
     const totalPackage = Math.ceil(totalPrice/250)
-    const averageWeight = Math.ceil(totalWeight/totalPackage)
+    const idealWeight = Math.ceil(totalWeight/totalPackage)
+    const idealCourier = courier.find(cour => idealWeight >= cour.min && idealWeight <= cour.max)
 
-    // 1 Package if total price less than 250
+    // Package if total price less than 250
     if(totalPrice <= 250 ){
         let courierPrice = courier.find(cour => totalWeight >= cour.min && totalWeight <= cour.max).prc ?? 0;
         return [
@@ -61,10 +63,18 @@ function splitItem(cart, courier) {
 
     let packageCart = Array.from({ length: totalPackage }, () => JSON.parse(JSON.stringify(emptyPack)))
 
-    // Condition break to package less than 250 per package
+    // Condition break to package less than 250 per package & less than Ideal Average Weight
     for(const item of cart){
         let itemAdded = false
         for(const pack of packageCart) {
+            if(pack.totalPrice + item.prc < 250 && pack.totalWeight + item.wgt <= idealCourier.max ){
+                pack.item.push(item)
+                pack.totalWeight += item.wgt
+                pack.totalPrice += item.prc
+                pack.courierPrice = courier.find(cour => pack.totalWeight >= cour.min && pack.totalWeight <= cour.max)?.prc ?? 0
+                itemAdded = true
+                break;
+            }
             if(pack.totalPrice + item.prc < 250){
                 pack.item.push(item)
                 pack.totalWeight += item.wgt
@@ -75,6 +85,7 @@ function splitItem(cart, courier) {
             }
         }
 
+        // If no condition were met and additional package were required
         if(!itemAdded){
             let itemToPush = {
                 item: [item],
@@ -87,10 +98,4 @@ function splitItem(cart, courier) {
     }
 
     return packageCart
-}
-
-function distributeWeight(packaging, courier){
-    let packCart = packaging.sort((a,b) => b.totalWeight - a.totalWeight)
-
-    return packCart
 }
